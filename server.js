@@ -1,8 +1,10 @@
 const express = require('express');
+const userRouter = require('./users/userRouter');
 
 const server = express();
 
 server.use(logger);
+server.use('/api/users', userRouter);
 
 server.get('/', (req, res) => {
   res.status(200).send(`<h2>Let's write some middleware!</h2>`)
