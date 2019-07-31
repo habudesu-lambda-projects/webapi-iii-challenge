@@ -1,23 +1,30 @@
 const express = require('express');
 
 const User = require('./userDb');
-const Posts = require('../posts/postDb');
+const Post = require('../posts/postDb');
 
 const router = express.Router();
 
 router.post('/', validateUser, async (req, res) => {
   try {
-    console.log(req.body);
     const user = await User.insert(req.body);
-    res.status(200).json(user);
+    res.status(201).json(user);
   }
   catch(error) {
     res.status(500).json(error)
   }
 });
 
-router.post('/:id/posts', (req, res) => {
-
+router.post('/:id/posts', validateUserId, validatePost, async (req, res) => {
+  const { id } = req.params;
+  const text = req.body.text;
+  try {
+    const post = await Post.insert({ text: text, user_id: id});
+    res.status(201).json(post);
+  }
+  catch(error) {
+    res.status(500).json(error)
+  }
 });
 
 router.get('/', async (req, res) => {
