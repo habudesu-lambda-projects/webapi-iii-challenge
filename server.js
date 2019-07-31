@@ -4,6 +4,7 @@ const userRouter = require('./users/userRouter');
 const server = express();
 
 server.use(logger);
+server.use(express.json());
 server.use('/api/users', userRouter);
 
 server.get('/', (req, res) => {

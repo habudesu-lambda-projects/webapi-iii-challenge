@@ -1,10 +1,13 @@
 const express = require('express');
+
 const User = require('./userDb');
+const Posts = require('../posts/postDb');
 
 const router = express.Router();
 
-router.post('/', validateUser, async (req, res) => {
+router.post('/', async (req, res) => {
   try {
+    console.log(req.body);
     const user = await User.insert(req.body);
     res.status(200).json(user);
   }
@@ -19,7 +22,7 @@ router.post('/:id/posts', (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const users = await Users.find();
+    const users = await Users.get();
     res.status(200).json(users);
   }
   catch(error) {
@@ -63,14 +66,8 @@ async function validateUserId(req, res, next) {
 
 function validateUser(req, res, next) {
   try {
-    const body = req.body;
-    if(!body) {
-      res.status(400).json({ message: "missing user data" });
-    } else if(!body.name){
-      res.status(400).json({ message: "missing required name field" });
-    } else {
-      next();
-    }
+    let body = req.body;
+    console.log(body);
   }
   catch(error) {
     res.status(500).json(error);
