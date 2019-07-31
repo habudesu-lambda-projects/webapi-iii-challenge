@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
-    const posts = Post.get();
+    const posts = await Post.get();
     res.status(200).json(posts);
   }
   catch(error) {
@@ -24,8 +24,15 @@ router.get('/:id', validatePostId, async (req, res) => {
   }
 });
 
-router.delete('/:id', (req, res) => {
-
+router.delete('/:id', validatePostId, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deleted = await Post.remove(id);
+    res.status(200).json({ message: "Post Deleted", post: req.post});
+  }
+  catch(error) {
+    res.status(500).json(error);
+  }
 });
 
 router.put('/:id', (req, res) => {
@@ -39,6 +46,7 @@ async function validatePostId(req, res, next) {
  try {
    const post = await Post.getById(id);
    if(post) {
+     req.post = post;
      next();
    } else {
      res.status(400).json({ message: "invalid post id" });
