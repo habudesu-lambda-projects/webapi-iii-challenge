@@ -35,8 +35,17 @@ router.delete('/:id', validatePostId, async (req, res) => {
   }
 });
 
-router.put('/:id', (req, res) => {
-
+router.put('/:id', validatePostId, async (req, res) => {
+  const { id } = req.params;
+  const body = req.body;
+  try {
+    const updated = await Post.update(id, { text: body.text, user_id: body.user_id });
+    const updatedPost = await Post.getById(id);
+    res.status(200).json(updatedPost);
+  }
+  catch(error) {
+    res.status(500).json(error);
+  }
 });
 
 // custom middleware
