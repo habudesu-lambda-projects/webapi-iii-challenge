@@ -3,8 +3,14 @@ const User = require('./userDb');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
-
+router.post('/', validateUser, async (req, res) => {
+  try {
+    const user = await User.insert(req.body);
+    res.status(200).json(user);
+  }
+  catch(error) {
+    res.status(500).json(error)
+  }
 });
 
 router.post('/:id/posts', (req, res) => {
