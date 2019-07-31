@@ -13,8 +13,15 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', (req, res) => {
-
+router.get('/:id', validatePostId, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const post = await Post.getById(id);
+    res.status(200).json(post);
+  }
+  catch(error) {
+    res.status(500).json(error);
+  }
 });
 
 router.delete('/:id', (req, res) => {
@@ -32,7 +39,7 @@ async function validatePostId(req, res, next) {
  try {
    const post = await Post.getById(id);
    if(post) {
-     res.status(200).json(post);
+     next();
    } else {
      res.status(400).json({ message: "invalid post id" });
    }
