@@ -41,7 +41,7 @@ async function validateUserId(req, res, next) {
       req.user = user;
       next();
     } else {
-      res.status(404).json({ message: "invalid user id" })
+      res.status(404).json({ message: "invalid user id" });
     }
   }
   catch(error) {
@@ -50,11 +50,35 @@ async function validateUserId(req, res, next) {
 };
 
 function validateUser(req, res, next) {
-
+  try {
+    const body = req.body;
+    if(!body) {
+      res.status(400).json({ message: "missing user data" });
+    } else if(!body.name){
+      res.status(400).json({ message: "missing required name field" });
+    } else {
+      next();
+    }
+  }
+  catch(error) {
+    res.status(500).json(error);
+  }
 };
 
 function validatePost(req, res, next) {
-
+ try {
+   const body = req.body;
+   if(!body) {
+     res.status(400).json({ message: "missing post data" });
+   } else if(!body.text) {
+     res.status(400).json({ message: "missing required text field" });
+   } else {
+     next();
+   }
+ }
+ catch(error) {
+   res.status(500).json(error);
+ }
 };
 
 module.exports = router;
