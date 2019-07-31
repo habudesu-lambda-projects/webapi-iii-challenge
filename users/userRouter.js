@@ -11,7 +11,7 @@ router.post('/', validateUser, async (req, res) => {
     res.status(201).json(user);
   }
   catch(error) {
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
 });
 
@@ -23,7 +23,7 @@ router.post('/:id/posts', validateUserId, validatePost, async (req, res) => {
     res.status(201).json(post);
   }
   catch(error) {
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
 });
 
@@ -59,12 +59,21 @@ router.delete('/:id', validateUserId, async (req, res) => {
     res.status(200).json({ message: "User Deleted", user: req.user});
   }
   catch(error) {
-    res.status(500).json(error)
+    res.status(500).json(error);
   }
 });
 
-router.put('/:id', (req, res) => {
-
+router.put('/:id', validateUserId, validateUser, async (req, res) => {
+  const { id } = req.params;
+  const body = req.body;
+  try {
+    const updated = await User.update(id, body);
+    const updatedUser = await User.getById(id);
+    res.status(201).json(updatedUser);
+  }
+  catch(error) {
+    res.status(500).json(error);
+  }
 });
 
 //custom middleware
