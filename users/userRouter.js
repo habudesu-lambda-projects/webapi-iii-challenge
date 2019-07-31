@@ -30,8 +30,8 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/:id', (req, res) => {
-
+router.get('/:id', validateUserId, async (req, res) => {
+  res.status(200).json(req.user);
 });
 
 router.get('/:id/posts', (req, res) => {
@@ -51,7 +51,7 @@ router.put('/:id', (req, res) => {
 async function validateUserId(req, res, next) {
   try {
     const { id } = req.params;
-    const user = await User.findById(id);
+    const user = await User.getById(id);
     if(user) {
       req.user = user;
       next();
