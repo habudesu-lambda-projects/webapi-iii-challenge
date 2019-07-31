@@ -70,7 +70,7 @@ function validateUser(req, res, next) {
     if(!body) {
       res.status(400).json({ message: "missing post data" });
     } else if(!body.name) {
-      res.status(400).json({ message: "missing required text field" });
+      res.status(400).json({ message: "missing required name field" });
     } else {
       next();
     }
