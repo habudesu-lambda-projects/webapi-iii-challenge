@@ -10,7 +10,7 @@ server.use('/api/users', userRouter);
 server.use('/api/posts', postRouter);
 
 server.get('/', (req, res) => {
-  res.status(200).send(`<h2>Let's write some middleware!</h2>`)
+  res.status(200).send(`<h2>API for WebAPI Challenge 3+4</h2>`)
 });
 
 //custom middleware
